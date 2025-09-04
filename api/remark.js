@@ -1,6 +1,12 @@
 
+import { setCORS } from "./_util.js";
+
 export default async function handler(req, res){
-  if(req.method !== "POST"){ return res.status(405).json({error:"Use POST"}); }
+  setCORS(res);
+  if(req.method === "OPTIONS") return res.status(200).end();
+  if(req.method !== "POST"){
+    return res.status(405).json({error:"Use POST"});
+  }
   try{
     const b = typeof req.body === "string" ? JSON.parse(req.body||"{}") : (req.body||{});
     const fields = b.fields||{};
